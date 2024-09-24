@@ -1,0 +1,161 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>AMovie - Login</title>
+
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="telephone=no" name="format-detection">
+
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Roboto -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
+
+    <!-- Stylesheets -->
+    <!-- Mobile menu -->
+    <link href="~/css/gozha-nav.css" rel="stylesheet">
+    <!-- Select -->
+    <link href="~/css/external/jquery.selectbox.css" rel="stylesheet">
+
+    <!-- Custom "css/style.css?v=1" -->
+    <link href="~/css/style3860.css" rel="stylesheet">
+
+    <!-- Modernizr -->
+    <script src="~/js/external/modernizr.custom.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
+</head>
+
+
+<body style="">
+    <div class="wrapper">
+
+
+
+        <!-- Main content -->
+        <form id="login-form" class="login" method="post" novalidate="">
+            <p class="login__title">sign in <br><span class="login-edition">welcome to Sinflex</span></p>
+
+            <div class="social social--colored">
+                <a href="#" class="social__variant fa fa-facebook"></a>
+                <a href="#" class="social__variant fa fa-twitter"></a>
+                <a href="#" class="social__variant fa fa-tumblr"></a>
+            </div>
+
+            <p class="login__tracker">or</p>
+
+            <div class="field-wrap">
+                <input type="Email" placeholder="Email" name="Email" class="login__input">
+                <input type="password" placeholder="Password" name="Password" class="login__input">
+              
+                <input type="checkbox" id="#informed" class="login__check styled">
+                <label for="#informed" class="login__check-info">remember me</label>
+            </div>
+
+            <div class="login__control">
+                <button type="submit" class="btn btn-md btn--warning btn--wider">sign in</button>
+                <a href="#" class="login__tracker form__tracker">Forgot password?</a>
+            </div>
+        </form>
+
+        <div class="clearfix"></div>
+    </div>
+
+    @* eskisi
+<div class="row">
+    <div class="col-md-6 mx-auto">
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">@ViewData["Title"]</h3>
+            </div>
+
+
+            <form method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <span asp-validation-for="Email"></span>
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <span asp-validation-for="Password"></span>
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password">
+                    </div>
+
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div> *@
+
+
+
+
+
+    <!-- JavaScript-->
+    <!-- jQuery 1.9.1-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/external/jquery-1.10.1.min.js"><\/script>')</script>
+    <script src="~/js/external/jquery-1.10.1.min.js"></script>
+    <!-- Migrate -->
+    <script src="~/js/external/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Bootstrap 3-->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    <!-- Mobile menu -->
+    <script src="~/js/jquery.mobile.menu.js"></script>
+    <!-- Select -->
+    <script src="~/js/external/jquery.selectbox-0.2.min.js"></script>
+    <!-- Form element -->
+    <script src="~/js/external/form-element.js"></script>
+    <style type="text/css">
+        input.styled {
+            display: none;
+        }
+
+        select.styled {
+            position: relative;
+            width: 190px;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            z-index: 5;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+        }</style>
+    <!-- Form validation -->
+    <script src="~/js/form.js"></script>
+
+    <!-- Custom -->
+    <script src="~/js/custom.js"></script>
+    <div class="top-scroll" style="display: none;"><a href="#"></a></div>
+
+</body>
+
+
+

@@ -1,0 +1,232 @@
+﻿@model MovieDetailsBookingViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<section class="container">
+    <div class="order-container">
+        <div class="order">
+            <img class="order__images" alt='' src="images/tickets.png">
+            <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span></p>
+            <div class="order__control">
+                <a href="#" class="order__control-btn active">Purchase</a>
+                <a href="#" class="order__control-btn">Reserve</a>
+            </div>
+        </div>
+    </div>
+    <div class="order-step-area">
+        <div class="order-step first--step">When</div>
+    </div>
+
+    <h2 class="page-heading heading--outcontainer"> Chosen Movie</h2>
+    <div class="col-sm-12 col-md-0">
+        <img src="~/images/movie/movie-sample1.jpg" style="object-fit: cover;width:250px; display: block; margin: auto;">
+        <p style="text-align: center;">@Model.Name</p>
+    </div>
+
+
+</section>
+
+<section class="container">
+    <div class="col-sm-12">
+
+        <h2 class="page-heading">Date</h2>
+
+        <div class="col-sm-6 login" style="padding-top: 15px;">
+            <div class="col-sm-6">
+                <div>
+                    <select name="Saloon" class="login__input" style="float:left;">
+                        <option value=>Select Saloon</option>
+                        @foreach (var item in Model.Saloons)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6" style="float:left;">
+                <div>
+                    <select name="Airdate" class="login__input" style="">
+                        <option value=>Select Airdate</option>
+                        @foreach (var item in Model.Airdates)
+                        {
+                            <option value="0-5000₺">@item</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <h2 class="page-heading">Pick Session</h2>
+
+            <div class="time-select time-select--wide">
+
+                <div class="time-select__group">
+                    <div class="col-sm-3">
+                        <p class="time-select__place">Select</p>
+                    </div>
+                    <ul class="col-sm-6 items-wrap">
+                        <li class="time-select__item" data-time='09:00'>09:00</li>
+                        <li class="time-select__item" data-time='11:00'>11:00</li>
+                        <li class="time-select__item" data-time='13:00'>13:00</li>
+                        <li class="time-select__item" data-time='15:00'>15:00</li>
+                        <li class="time-select__item" data-time='17:00'>17:00</li>
+                        <li class="time-select__item" data-time='19:00'>19:00</li>
+                        <li class="time-select__item" data-time='21:00'>21:00</li>
+                        <li class="time-select__item" data-time='23:00'>23:00</li>
+                        <li class="time-select__item" data-time='01:00'>01:00</li>
+                    </ul>
+                </div>
+
+                <div class="choose-indector choose-indector--time">
+                    <strong>Choosen: </strong><span class="choosen-area"></span>
+                </div>
+            </div>
+        </div>
+
+
+</section>
+
+<div class="clearfix"></div>
+
+<form id='film-and-time' class="booking-form" method='get' action='https://amovie.gozha.net/book2.html'>
+    <input type='text' name='choosen-movie' class="choosen-movie">
+
+    <input type='text' name='choosen-city' class="choosen-city">
+    <input type='text' name='choosen-date' class="choosen-date">
+
+    <input type='text' name='choosen-cinema' class="choosen-cinema">
+    <input type='text' name='choosen-time' class="choosen-time">
+
+
+    <div class="booking-pagination">
+        <a href="#" class="booking-pagination__prev hide--arrow">
+            <span class="arrow__text arrow--prev"></span>
+            <span class="arrow__info"></span>
+        </a>
+        <a href="book2.html" class="booking-pagination__next">
+            <span class="arrow__text arrow--next">next step</span>
+            <span class="arrow__info">choose a sit</span>
+        </a>
+    </div>
+
+</form>
+
+<div class="clearfix"></div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/external/jquery-1.10.1.min.js"><\/script>')</script>
+<script src="~/js/external/jquery-1.10.1.min.js"></script>
+<!-- Migrate -->
+<script src="~/js/external/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap 3-->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+<!-- Mobile menu -->
+<script src="~/js/jquery.mobile.menu.js"></script>
+<!-- Select -->
+<script src="~/js/external/jquery.selectbox-0.2.min.js"></script>
+<!-- Form element -->
+<script src="~/js/external/form-element.js"></script>
+<style type="text/css">
+    input.styled {
+        display: none;
+    }
+
+    select.styled {
+        position: relative;
+        width: 190px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        z-index: 5;
+    }
+
+    .disabled {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+    }</style>
+<!-- Form validation -->
+<script src="~/js/form.js"></script>
+
+<!-- Custom -->
+<script src="~/js/custom.js"></script>
+<div class="top-scroll" style="display: none;"><a href="#"></a></div>
+@* //deneme *@
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            // Sayfa yüklendiğinde çalışacak kodlar buraya yazılabilir
+        });
+
+        // GET isteği örneği
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
+            dataType: "json",
+            success: function (result) {
+                console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+            },
+            error: function (req, status, error) {
+                console.log(status); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+            }
+        });
+
+        // POST isteği örneği
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("PostNames")", // Bu kısmı uygun bir URL ile değiştirin
+            dataType: "json",
+            data: { name: "ABC" }, // Göndermek istediğiniz veriyi burada belirtin
+            success: function (result) {
+                console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+            },
+            error: function (req, status, error) {
+                console.log(status); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+            }
+        });
+
+        // $(document).ready(function () {
+
+
+        // });
+        // $.ajax({
+        //     type: "GET",
+        //     url: "@Url.Action("GetNames")",
+        //     dataType: "json",
+        //     success: function (result) {
+        //         console.log(result);
+        //     },
+        //     error: function (req, status, error) {
+        //         console.log(status)
+        //     }
+        // });
+
+
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "@Url.Action("PostNames")",
+        //     dataType: "json",
+        //     data: {name:"ABC"},
+        //     success: function (result) {
+        //         console.log(result);
+        //     },
+        //     error: function (req, status, error) {
+        //         console.log(status)
+        //     }
+        // });
+    </script>
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_BookingOne();
+    });
+</script>
