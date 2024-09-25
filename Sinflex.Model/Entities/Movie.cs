@@ -10,7 +10,6 @@ namespace Sinflex.Model.Entities
         public double Duration { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Actors { get; set; }
-        public string Genre { get; set; }
 		public string AgeRestriction { get; set; }
 		public string Director { get; set; }
 

@@ -19,5 +19,26 @@ namespace Sinflex.Web.Controllers
 
 			return View(movie);
 		}
-	}
+
+
+        [HttpGet]
+        public JsonResult GetNames()
+        {
+            var names = new string[3]
+            {
+               "Ali",
+               "Ahmet",
+               "Hamza"
+
+            };
+            return new JsonResult(names);
+        }
+
+        [HttpPost]
+        public JsonResult PostName(string name)
+        {
+            return new JsonResult(Ok());
+
+        }
+    }
 }

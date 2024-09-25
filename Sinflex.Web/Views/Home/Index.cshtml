@@ -61,9 +61,9 @@
 
 				<div class="col-sm-9 col-md-10 col-lg-10 movie__about">
 					<a href="movie-page-full.html" class="movie__title link--huge">@movie.Name</a>
-					<input type="hidden" name="movieId" value=@movie.Id />
+					@* <input type="hidden" name="movieId" value=@movie.Id /> *@
 					<p class="movie__time">@movie.Duration min</p>
-					<p class="movie__option"><strong>Genre: </strong><a href="#">@movie.Genre</a></p>
+					<p class="movie__option"><strong>Genre: </strong><a href="#">@movie.Category</a></p>
 					<p class="movie__option"><strong>Release date: </strong>@movie.ReleaseDate.ToShortDateString()</p>
 					<p class="movie__option"><strong>Director: </strong><a href="#">@movie.Director</a></p>
 					<p class="movie__option">
@@ -73,7 +73,7 @@
 
 					<div class="movie__btns">
 						
-						<button type="submit" class="btn btn-md btn--warning" asp-controller="Booking" asp-action="Index">Book a ticket for this movie</button>
+						<button type="submit" class="btn btn-md btn--warning" asp-controller="Booking" asp-action="Index" asp-route-movieId="@movie.Id">Book a ticket for this movie</button>
 					</div>
 
 					<div class="preview-footer">

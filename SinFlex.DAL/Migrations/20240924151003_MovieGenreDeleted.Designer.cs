@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sinflex.DAL.Context;
 
@@ -11,9 +12,11 @@ using Sinflex.DAL.Context;
 namespace Sinflex.DAL.Migrations
 {
     [DbContext(typeof(SinflexContext))]
-    partial class SinflexContextModelSnapshot : ModelSnapshot
+    [Migration("20240924151003_MovieGenreDeleted")]
+    partial class MovieGenreDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,9 +181,6 @@ namespace Sinflex.DAL.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SaloonId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -190,8 +190,6 @@ namespace Sinflex.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("SaloonId");
 
                     b.ToTable("AirDates");
                 });
@@ -744,15 +742,7 @@ namespace Sinflex.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sinflex.Model.Entities.Saloon", "Saloon")
-                        .WithMany()
-                        .HasForeignKey("SaloonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Movie");
-
-                    b.Navigation("Saloon");
                 });
 
             modelBuilder.Entity("Sinflex.Model.Entities.Category", b =>

@@ -14,7 +14,8 @@ namespace Sinflex.BLL.Repositories.ViewModels.BookingViewModels
         //public List<int> SaloonId { get; set; }
         public Dictionary<int, string> Saloons { get; set; }
         public List<DateTime> Sessions { get; set; }
-        public List<DateTime> Airdates { get; set; }
+        //public List<DateTime> Airdates { get; set; }
+        public Dictionary<int,DateTime> Airdates { get; set; }
         
     }
 }

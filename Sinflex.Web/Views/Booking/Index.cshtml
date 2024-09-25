@@ -37,9 +37,20 @@
         <h2 class="page-heading">Date</h2>
 
         <div class="col-sm-6 login" style="padding-top: 15px;">
+            <div class="col-sm-6" style="float:left;">
+                <div>
+                    <select id="drpAirdates" name="Airdate" class="login__input" style="float:left;">
+                        <option value=>Select Airdate</option>
+                        @foreach (var item in Model.Airdates)
+                        {
+                            <option value="@item.Key">@item.Value.ToShortDateString()</option>
+                        }
+                    </select>
+                </div>
+            </div>
             <div class="col-sm-6">
                 <div>
-                    <select name="Saloon" class="login__input" style="float:left;">
+                    <select id="drpSaloon" name="Saloon" class="login__input" style="">
                         <option value=>Select Saloon</option>
                         @foreach (var item in Model.Saloons)
                         {
@@ -48,17 +59,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-6" style="float:left;">
-                <div>
-                    <select name="Airdate" class="login__input" style="">
-                        <option value=>Select Airdate</option>
-                        @foreach (var item in Model.Airdates)
-                        {
-                            <option value="0-5000₺">@item</option>
-                        }
-                    </select>
-                </div>
-            </div>
+
         </div>
         <div class="col-sm-12">
             <h2 class="page-heading">Pick Session</h2>
@@ -70,15 +71,12 @@
                         <p class="time-select__place">Select</p>
                     </div>
                     <ul class="col-sm-6 items-wrap">
-                        <li class="time-select__item" data-time='09:00'>09:00</li>
-                        <li class="time-select__item" data-time='11:00'>11:00</li>
-                        <li class="time-select__item" data-time='13:00'>13:00</li>
-                        <li class="time-select__item" data-time='15:00'>15:00</li>
-                        <li class="time-select__item" data-time='17:00'>17:00</li>
-                        <li class="time-select__item" data-time='19:00'>19:00</li>
-                        <li class="time-select__item" data-time='21:00'>21:00</li>
-                        <li class="time-select__item" data-time='23:00'>23:00</li>
-                        <li class="time-select__item" data-time='01:00'>01:00</li>
+                        @foreach (var item in Model.Sessions)
+                        {
+                            <li class="time-select__item" data-time='09:00'>@item.ToShortTimeString()</li>
+                        }
+
+
                     </ul>
                 </div>
 
@@ -87,6 +85,7 @@
                 </div>
             </div>
         </div>
+
 
 
 </section>
@@ -114,8 +113,9 @@
         </a>
     </div>
 
-</form>
 
+
+</form>
 <div class="clearfix"></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -159,37 +159,66 @@
 @section Scripts
 {
     <script>
-
         $(document).ready(function () {
-            // Sayfa yüklendiğinde çalışacak kodlar buraya yazılabilir
+            init_BookingOne();
+
+            $("#drpSaloon").val($("#drpSaloon option:eq(1)").val());
+            $("#drpAirdates").val($("#drpAirdates option:eq(1)").val());
+
+            // $('#testButton').on("click", function () {
+
+
+
+            //     console.log('ajax çağırıcam');
+
+
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
+            //         dataType: "json",
+            //         success: function (result) {
+            //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+            //         },
+            //         error: function (req, status, error) {
+            //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+            //         }
+            //     });
+
+
+            //     console.log('ajax çağırdım');
+            // });
         });
+
+        // function getNames(){
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
+        //         dataType: "json",
+        //         success: function (result) {
+        //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+        //         },
+        //         error: function (req, status, error) {
+        //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+        //         }
+        //     });
+        // }
 
         // GET isteği örneği
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
-            dataType: "json",
-            success: function (result) {
-                console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-            },
-            error: function (req, status, error) {
-                console.log(status); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-            }
-        });
+
 
         // POST isteği örneği
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("PostNames")", // Bu kısmı uygun bir URL ile değiştirin
-            dataType: "json",
-            data: { name: "ABC" }, // Göndermek istediğiniz veriyi burada belirtin
-            success: function (result) {
-                console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-            },
-            error: function (req, status, error) {
-                console.log(status); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-            }
-        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: "@Url.Action("PostNames")", // Bu kısmı uygun bir URL ile değiştirin
+        //     dataType: "json",
+        //     data: { name: "ABC" }, // Göndermek istediğiniz veriyi burada belirtin
+        //     success: function (result) {
+        //         console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+        //     },
+        //     error: function (req, status, error) {
+        //         console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+        //     }
+        // });
 
         // $(document).ready(function () {
 
@@ -225,8 +254,3 @@
 
 }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        init_BookingOne();
-    });
-</script>

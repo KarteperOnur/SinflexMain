@@ -16,7 +16,7 @@ namespace Sinflex.BLL.Repositories.ViewModels.MovieViewModels
         public List<DateTime> AirDates { get; set; }
         public string ImagePath { get; set; }
         public string Actors { get; set; }
-        public string Genre { get; set; }
+        public string Category { get; set; }
         public string Director { get; set; }
         public string AgeRestriction { get; set; }
 
