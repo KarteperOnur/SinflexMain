@@ -1,3 +1,5 @@
+using Sinflex.BLL.Repositories.Abstracts;
+using Sinflex.BLL.Repositories.Concretes;
 using Sinflex.DAL.Context;
 using Sinflex.IOC.DependencyResolvers;
 
@@ -11,6 +13,9 @@ builder.Services.AddSinflexContext();
 builder.Services.AddRepositoryService();
 
 builder.Services.AddIdentityService();
+
+builder.Services.AddScoped<ISaloonService, SaloonService>();
+
 
 var app = builder.Build();
 

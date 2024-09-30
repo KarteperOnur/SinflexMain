@@ -20,5 +20,6 @@ namespace Sinflex.Model.Entities
         public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
         public ICollection<Ticket> Ticket { get; set; } = new HashSet<Ticket>();
         public ICollection<AirDate> AirDates { get; set; } = new HashSet<AirDate>();
+        public ICollection<Session> Sessions { get; set; } = new HashSet<Session>();
     }
 }

@@ -11,7 +11,7 @@ namespace Sinflex.Model.Entities
     {
         public DateTime Time { get; set; }
 
-        //MAPPING
+        public virtual Saloon Saloons { get; set; }
 
         public virtual Movie Movies { get; set; }
     }

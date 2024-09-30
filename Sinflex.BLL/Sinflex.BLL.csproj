@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\ViewModels\NewFolder\**" />
+    <EmbeddedResource Remove="Repositories\ViewModels\NewFolder\**" />
+    <None Remove="Repositories\ViewModels\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repositories\ViewModels\SeedViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sinflex.Core\Sinflex.Core.csproj" />
     <ProjectReference Include="..\Sinflex.DAL\Sinflex.DAL.csproj" />
     <ProjectReference Include="..\Sinflex.Model\Sinflex.Model.csproj" />

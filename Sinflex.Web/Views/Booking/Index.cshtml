@@ -73,7 +73,7 @@
                     <ul class="col-sm-6 items-wrap">
                         @foreach (var item in Model.Sessions)
                         {
-                            <li class="time-select__item" data-time='09:00'>@item.ToShortTimeString()</li>
+                            <li class="time-select__item" id="drpSessions" data-time='09:00'>@item.ToShortTimeString()</li>
                         }
 
 
@@ -156,6 +156,11 @@
 <script src="~/js/custom.js"></script>
 <div class="top-scroll" style="display: none;"><a href="#"></a></div>
 @* //deneme *@
+
+
+
+
+
 @section Scripts
 {
     <script>
@@ -164,61 +169,111 @@
 
             $("#drpSaloon").val($("#drpSaloon option:eq(1)").val());
             $("#drpAirdates").val($("#drpAirdates option:eq(1)").val());
-
-            // $('#testButton').on("click", function () {
-
-
-
-            //     console.log('ajax çağırıcam');
-
-
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
-            //         dataType: "json",
-            //         success: function (result) {
-            //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-            //         },
-            //         error: function (req, status, error) {
-            //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-            //         }
-            //     });
-
-
-            //     console.log('ajax çağırdım');
-            // });
         });
 
-        // function getNames(){
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
-        //         dataType: "json",
-        //         success: function (result) {
-        //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-        //         },
-        //         error: function (req, status, error) {
-        //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-        //         }
+        // // Sayfa yüklendiğinde çalışacak kod
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // drpAirdates alanını seçin
+        //     var drpAirdates = document.getElementById("drpAirdates");
+
+        //     // drpAirdates alanının değeri değiştiğinde çalışacak işlev
+        //     drpAirdates.addEventListener("change", function () {
+        //         // drpSaloon alanını seçin
+        //         var drpSaloon = document.getElementById("drpSaloon");
+
+        //         // drpSaloon alanını boşaltın
+        //         drpSaloon.innerHTML = ""; // veya drpSaloon.value = "";
+
+        //         // $("drpSaloon").on('click', function () {
+        //         //     $("drpSaloon").load("/BookingController/SeedData");
+
+        //         //     $.get("/BookingController/SeedData", function (data) {
+        //         //         $("drpSaloon").html(Data.DEF)
+        //         //     })
+
+        //         // })
+
         //     });
-        // }
-
-        // GET isteği örneği
-
-
-        // POST isteği örneği
-        // $.ajax({
-        //     type: "POST",
-        //     url: "@Url.Action("PostNames")", // Bu kısmı uygun bir URL ile değiştirin
-        //     dataType: "json",
-        //     data: { name: "ABC" }, // Göndermek istediğiniz veriyi burada belirtin
-        //     success: function (result) {
-        //         console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-        //     },
-        //     error: function (req, status, error) {
-        //         console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-        //     }
         // });
+
+
+
+
+        $("#drpAirdates").change(function () {
+
+            var myUri = "@Url.Action("GetSaloonByAirdate")";
+            var airdate = $("#drpAirdates option:selected").text();
+
+
+
+            $.ajax({
+                type: "POST",
+                url: myUri, // Gerçek Booking/index URL'sini buraya yazın
+                dataType: "Json",
+                data: { airdate: airdate },
+                success: function (result) {
+                    $('#drpSaloon').empty();
+                    $('#drpSaloon').append("<option value='0'>Choose a Saloon</option>");
+
+                    $.each(result.saloons, function (key, item) {
+                        $('#drpSaloon').append("<option value='" + key + "'>" + item + "</option>");
+                    });
+                    // Burada başka işlemler de yapabilirsiniz
+                },
+                error: function (req, status, error) {
+                    console.log('hataAldım');
+                    console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+                }
+            });
+
+        });
+
+
+
+
+
+
+
+        $("#drpSaloon").change(function () {
+
+            var myUri = "@Url.Action("GetSessionsByAirdateSaloonId")";
+            var saloonid = $("#drpSaloon").val();
+            var airdate = $("#drpAirdates option:selected").text();
+
+
+            $.ajax({
+                type: "POST",
+                url: myUri, // Gerçek Booking/index URL'sini buraya yazın
+                dataType: "Json",
+                data: { Saloonid: saloonid, Airdate: airdate },
+                success: function (result) {
+
+                    $('#drpSessions').empty();
+
+                    $.each(result, function (key, item) {
+                        $('#drpSessions').append("<option value='" + key + "'>" + item + "</option>");
+                    });
+                    // Burada başka işlemler de yapabilirsiniz
+                },
+                error: function (req, status, error) {
+                    console.log('hataAldım');
+                    console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+                }
+            });
+
+        });
+
+
+
+    </script>
+
+}
+
+
+
+
+
+
 
         // $(document).ready(function () {
 
@@ -250,7 +305,84 @@
         //         console.log(status)
         //     }
         // });
-    </script>
 
-}
 
+        // $(document).ready(function () {
+        //     // Dropdown tıklanma olayını yakala
+        //     $('#drpAirdates').on('click', function () {
+        //         // Dropdown içeriğini boşalt
+        //         $(this).empty();
+        //         console.log('silindi')
+        //     });
+        // });
+
+        // $('#testButton').on("click", function () {
+
+
+
+        //     console.log('ajax çağırıcam');
+
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
+        //         dataType: "json",
+        //         success: function (result) {
+        //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+        //         },
+        //         error: function (req, status, error) {
+        //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+        //         }
+        //     });
+
+
+        //     console.log('ajax çağırdım');
+        // });
+
+
+        // function getNames(airdateId){
+        //     $.ajax({
+        //         type: "GET",
+        //         data: airdateId
+        //         url: "@Url.Action("GetSaloonByAirDateId")", // Bu kısmı uygun bir URL ile değiştirin
+        //         dataType: "json",
+        //         success: function (result) {
+        //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
+        //         },
+        //         error: function (req, status, error) {
+        //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+        //         }
+        //     });
+        // }
+
+        // GET isteği örneği
+        // GET isteği örneği
+
+                // $("#drpSaloon").change(function () {
+
+        //     var myUri = "@Url.Action("BookingController/SeedData")";
+        //     var saloonid = $("#drpSaloon").val();
+
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url: myUri, // Gerçek Booking/index URL'sini buraya yazın
+        //         dataType: "Json",
+        //         data: { saloonid: saloonid },
+        //         success: function (result) {
+
+        //             $('#drpSaloon').empty();
+
+        //             $.each(result, function (key, item) {
+        //                 $('#drpSaloon').append("
+<option value='" + key + "'>" + item + "</option>");
+        //             });
+        //             // Burada başka işlemler de yapabilirsiniz
+        //         },
+        //         error: function (req, status, error) {
+        //             console.log('hataAldım');
+        //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
+        //         }
+        //     });
+
+        // });

@@ -3,7 +3,6 @@ using Sinflex.BLL.Repositories.Abstracts;
 using Sinflex.BLL.Repositories.Abstracts.BaseAbstract;
 using Sinflex.BLL.Repositories.ViewModels.BookingViewModels;
 using Sinflex.BLL.Repositories.ViewModels.MovieViewModels;
-using Sinflex.DAL.Context;
 using Sinflex.Model.Entities;
 
 namespace Sinflex.BLL.Repositories.Concretes

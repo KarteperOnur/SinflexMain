@@ -19,6 +19,7 @@ namespace Sinflex.Web.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
+
         public HomeController(ILogger<HomeController> logger, IMovieService movieService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
