@@ -65,25 +65,23 @@ namespace Sinflex.BLL.Repositories.Concretes
                 .Include(p => p.Saloons)
                 .Where(x => x.Saloons.Id.Equals(saloonid) && x.Time.Date.Equals(airDate.Date)).ToList();
 
-            Dictionary<int, DateTime> SessionDictionary = new Dictionary<int, DateTime>();
+            Dictionary<int, DateTime> sessionDictionary = new Dictionary<int, DateTime>();
             foreach (var x in sessions)
             {
-                var saloon = x.Saloons.Id;
-                var saloonName = x.Saloons.Name;
-                var movie = x.Movies.Id;
-                var airdate = x.Time.Date;
-                SessionDictionary.Add(saloon, airdate);
+
+                var session = x.Id;
+                //var movie = x.Movies.Id;
+                //var airdate = new DateTime(1900, 1, 1, x.Time.Hour, x.Time.Minute, x.Time.Second);
+                var airdate = x.Time;
+                sessionDictionary.Add(session, airdate);
             }
             var result = new BookingSaloonViewModel
             {
-                Sessions = SessionDictionary
+                Sessions = sessionDictionary
             };
             return result;
 
         }
-
-
-
 
     }
 }

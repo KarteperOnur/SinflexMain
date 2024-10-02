@@ -46,7 +46,10 @@ namespace Sinflex.Web.Controllers
             return Json(result); 
         }
 
-
+        public IActionResult Seating()
+        {
+            return View();
+        }
 
         //[HttpGet]
         //public JsonResult GetNames()
@@ -62,14 +65,14 @@ namespace Sinflex.Web.Controllers
         //}
 
         //[HttpPost]
-        public JsonResult SeedData()
-        {
-          mySillyData mySillyData = new mySillyData()
-          {
-              ABC = 1,
-              DEF = "ABCTEST",
-          };
-            return Json(mySillyData); 
-        }
+        //public JsonResult SeedData()
+        //{
+        //  mySillyData mySillyData = new mySillyData()
+        //  {
+        //      ABC = 1,
+        //      DEF = "ABCTEST",
+        //  };
+        //    return Json(mySillyData); 
+        //}
     }
 }
