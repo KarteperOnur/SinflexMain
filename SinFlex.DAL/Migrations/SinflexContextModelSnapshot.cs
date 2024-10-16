@@ -155,6 +155,21 @@ namespace Sinflex.DAL.Migrations
                     b.ToTable("MovieSaloon");
                 });
 
+            modelBuilder.Entity("SeatTicket", b =>
+                {
+                    b.Property<int>("SeatsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SeatsId", "TicketsId");
+
+                    b.HasIndex("TicketsId");
+
+                    b.ToTable("SeatTicket");
+                });
+
             modelBuilder.Entity("Sinflex.Model.Entities.AirDate", b =>
                 {
                     b.Property<int>("Id")
@@ -549,6 +564,10 @@ namespace Sinflex.DAL.Migrations
                     b.Property<Guid>("MasterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Place")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SaloonId")
                         .HasColumnType("int");
 
@@ -558,9 +577,14 @@ namespace Sinflex.DAL.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SaloonId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Seats");
                 });
@@ -635,9 +659,6 @@ namespace Sinflex.DAL.Migrations
                     b.Property<int?>("SaloonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeatId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -652,8 +673,6 @@ namespace Sinflex.DAL.Migrations
                     b.HasIndex("MovieId");
 
                     b.HasIndex("SaloonId");
-
-                    b.HasIndex("SeatId");
 
                     b.HasIndex("UserId");
 
@@ -741,6 +760,21 @@ namespace Sinflex.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SeatTicket", b =>
+                {
+                    b.HasOne("Sinflex.Model.Entities.Seat", null)
+                        .WithMany()
+                        .HasForeignKey("SeatsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sinflex.Model.Entities.Ticket", null)
+                        .WithMany()
+                        .HasForeignKey("TicketsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Sinflex.Model.Entities.AirDate", b =>
                 {
                     b.HasOne("Sinflex.Model.Entities.Movie", "Movie")
@@ -798,7 +832,13 @@ namespace Sinflex.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Sinflex.Model.Entities.AppUser", "User")
+                        .WithMany("Seats")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Saloon");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Sinflex.Model.Entities.Session", b =>
@@ -830,25 +870,19 @@ namespace Sinflex.DAL.Migrations
                         .WithMany("Ticket")
                         .HasForeignKey("SaloonId");
 
-                    b.HasOne("Sinflex.Model.Entities.Seat", "Seat")
-                        .WithMany()
-                        .HasForeignKey("SeatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Sinflex.Model.Entities.AppUser", "User")
                         .WithMany("Tickets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Seat");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Sinflex.Model.Entities.AppUser", b =>
                 {
+                    b.Navigation("Seats");
+
                     b.Navigation("Tickets");
                 });
 

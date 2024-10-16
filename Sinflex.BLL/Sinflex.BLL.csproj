@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sinflex.Core\Sinflex.Core.csproj" />
     <ProjectReference Include="..\Sinflex.DAL\Sinflex.DAL.csproj" />
     <ProjectReference Include="..\Sinflex.Model\Sinflex.Model.csproj" />

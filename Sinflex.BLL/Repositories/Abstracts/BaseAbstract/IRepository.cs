@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace Sinflex.BLL.Repositories.Abstracts.BaseAbstract
         //Passive
         IEnumerable<T> GetPassives();
         IQueryable<T> GetPassivesQ();
+
+        IQueryable<T> Find(Expression<Func<T, Boolean>> where);
 
 
         //Destroy

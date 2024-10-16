@@ -1,0 +1,46 @@
+﻿@model TicketViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="order-container">
+    <div class="order">
+        <img class="order__images" alt='' src="images/tickets.png">
+        <p class="order__title">Thank you <br><span class="order__descript">you have successfully purchased tickets</span></p>
+    </div>
+
+    <div class="ticket">
+        <div class="ticket-position">
+            <div class="ticket__indecator indecator--pre"><div class="indecator-text pre--text">online ticket</div> </div>
+            <div class="ticket__inner">
+
+                <div class="ticket-secondary">
+                    <span class="ticket__item">Ticket number <strong class="ticket__number">@Model.TicketNumber</strong></span>
+                    <span class="ticket__item ticket__date">@Model.SelectedAirdate</span>
+                    <span class="ticket__item ticket__time">@Model.SelectedSession</span>
+                    <span class="ticket__item">Cinema: <span class="ticket__cinema">Sinflex</span></span>
+                    <span class="ticket__item">Hall: <span class="ticket__hall">@Model.SaloonName</span></span>
+                    <span class="ticket__item ticket__price">price: <strong class="ticket__cost">$60</strong></span>
+                </div>
+
+                <div class="ticket-primery">
+                    <span class="ticket__item ticket__item--primery ticket__film">Film<br><strong class="ticket__movie">@Model.MovieName</strong></span>
+                    <span class="ticket__item ticket__item--primery">Sits: <span class="ticket__place">@Model.SelectedSeat</span></span>
+                </div>
+
+
+            </div>
+            <div class="ticket__indecator indecator--post"><div class="indecator-text post--text">online ticket</div></div>
+        </div>
+    </div>
+
+    <div class="ticket-control">
+        <a href="#" class="watchlist list--download">Download</a>
+        <a href="#" class="watchlist list--print">Print</a>
+    </div>
+
+</div>
+<div class="clearfix"></div>

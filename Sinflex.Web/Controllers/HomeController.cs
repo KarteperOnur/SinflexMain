@@ -1,13 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sinflex.BLL.Repositories.Abstracts;
 using Sinflex.BLL.Repositories.ViewModels.AppUserViewModels;
 using Sinflex.BLL.Repositories.ViewModels.MovieViewModels;
-using Sinflex.Common.EmailHelpers;
 using Sinflex.Model.Entities;
 using Sinflex.Web.Models;
 using System.Diagnostics;
-using System.Web;
 
 
 namespace Sinflex.Web.Controllers
@@ -28,7 +27,7 @@ namespace Sinflex.Web.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Index(DateTime? searchDate)
+        public IActionResult Index(DateTime? searchDate, string searchFilter, bool isSecondClick)
         {
             IEnumerable<MovieListModel> movies;
 
@@ -38,9 +37,10 @@ namespace Sinflex.Web.Controllers
             }
             else
             {
-                movies = _movieService.GetAllMovies();
+                movies = _movieService.GetAllMovies(searchFilter, isSecondClick);
             }
 
+            ViewBag.ClickValue = isSecondClick ? "false" : "true";
             return View(movies);
         }
 
@@ -102,11 +102,13 @@ namespace Sinflex.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {

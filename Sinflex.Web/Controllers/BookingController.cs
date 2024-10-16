@@ -1,41 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Sinflex.BLL.Repositories.Abstracts;
-using Sinflex.BLL.Repositories.ViewModels;
+using Sinflex.BLL.Repositories.ViewModels.BookingViewModels;
+using Sinflex.BLL.Repositories.ViewModels.SeatingViewModels;
+using Sinflex.Model.Entities;
+
 
 namespace Sinflex.Web.Controllers
 {
     public class BookingController : Controller
-	{
-		private readonly IMovieService _movieService;
+    {
+        private readonly ITicketService _ticketService;
+        private readonly IMovieService _movieService;
         private readonly ISaloonService _saloonService;
+        private readonly ISeatService _seatService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BookingController(IMovieService movieService, ISaloonService saloonService)
+        public BookingController(IMovieService movieService, ISaloonService saloonService, ISeatService seatService, ITicketService ticketService, UserManager<AppUser> userManager)
         {
             _movieService = movieService;
             _saloonService = saloonService;
+            _seatService = seatService;
+            _ticketService = ticketService;
+            _userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Index(int movieId)
-		{
-			var movie = _movieService.GetMovieDetailsById(movieId);
+        {
+                var movie = _movieService.GetMovieDetailsById(movieId);
 
-			return View(movie);
-		}
+                return View(movie);
+        }
+
         public JsonResult GetSaloonByAirdate(DateTime airDate)
         {
             var saloons = _saloonService.GetSaloonByAirdate(airDate);
-            // Saloon verilerini işleyin ve view'e gönderin
 
-
-            //var deneme = new Dictionary<int, string>();
-
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    deneme.Add(i, $"Saloon{i}");
-            //}
-
-
-            return Json(saloons); // Örnek olarak JSON olarak geri döndürüyoruz
+            return Json(saloons);
         }
 
         public JsonResult GetSessionsByAirdateSaloonId(int saloonid, DateTime airDate)
@@ -43,36 +46,40 @@ namespace Sinflex.Web.Controllers
             var result = _saloonService.GetSessionsByAirdateSaloonId(saloonid, airDate);
 
 
-            return Json(result); 
+            return Json(result);
         }
 
-        public IActionResult Seating()
+
+
+        [HttpPost]
+        public IActionResult Seating(MovieDetailsPostViewModel model)
+       {
+            //_saloonService.SetPrice()
+            //SERVİSTE DOLDUR
+            //if (await _userManager.GetUserAsync().Result.UserType == UserType.VIP)
+            //    model.PurchasePrice = 75;
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> SubmitSeatingData([FromBody] SeatingViewModel model)
         {
-            return View();
+            
+            var insertSeatResult = await _seatService.InsertSeat(model);
+            
+            if (insertSeatResult == true)
+            {
+                var ticketViewModel = await _ticketService.GenerateTicket(model);
+
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "Ticket", ticketViewModel) });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error" });
+            }
         }
 
-        //[HttpGet]
-        //public JsonResult GetNames()
-        //{
-        //    var names = new string[3]
-        //    {
-        //       "Ali",
-        //       "Ahmet",
-        //       "Hamza"
-
-        //    };
-        //    return new JsonResult(names);
-        //}
-
-        //[HttpPost]
-        //public JsonResult SeedData()
-        //{
-        //  mySillyData mySillyData = new mySillyData()
-        //  {
-        //      ABC = 1,
-        //      DEF = "ABCTEST",
-        //  };
-        //    return Json(mySillyData); 
-        //}
     }
 }

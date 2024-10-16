@@ -92,7 +92,7 @@
 
 <div class="clearfix"></div>
 
-<form id='film-and-time' class="booking-form" method='get' action='https://amovie.gozha.net/book2.html'>
+<form id='film-and-time' class="booking-form" method="post" asp-controller="Booking" asp-action="Seating">
     <input type='text' name='choosen-movie' class="choosen-movie">
 
     <input type='text' name='choosen-city' class="choosen-city">
@@ -103,58 +103,18 @@
 
 
     <div class="booking-pagination">
-        <a href="#" class="booking-pagination__prev hide--arrow" >
-            
-            <span class="arrow__text arrow--prev"></span>
-            <span class="arrow__info"></span>
-        </a>
-        <a asp-controller="Booking" asp-action="Seating" class="booking-pagination__next">
+
+        <input name="SelectedAirdate" type="hidden" id="hdnAirDate" />
+        <input name="SelectedSaloonId" type="hidden" id="hdnSaloon" />
+        <input name="SelectedSession" type="hidden" id="hdnSession" />
+        <input name="MovieId" type="hidden" id="hdnMovieId" value="@Model.MovieId" />
+        <a id="btnNextStep" class="booking-pagination__next" href="javascript:;" onclick="document.getElementById('film-and-time').submit();">
             <span class="arrow__text arrow--next">next step</span>
             <span class="arrow__info">choose a sit</span>
         </a>
     </div>
-
-
-
 </form>
 <div class="clearfix"></div>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/external/jquery-1.10.1.min.js"><\/script>')</script>
-<script src="~/js/external/jquery-1.10.1.min.js"></script>
-<!-- Migrate -->
-<script src="~/js/external/jquery-migrate-1.2.1.min.js"></script>
-<!-- Bootstrap 3-->
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-
-<!-- Mobile menu -->
-<script src="~/js/jquery.mobile.menu.js"></script>
-<!-- Select -->
-<script src="~/js/external/jquery.selectbox-0.2.min.js"></script>
-<!-- Form element -->
-<script src="~/js/external/form-element.js"></script>
-<style type="text/css">
-    input.styled {
-        display: none;
-    }
-
-    select.styled {
-        position: relative;
-        width: 190px;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        z-index: 5;
-    }
-
-    .disabled {
-        opacity: 0.5;
-        filter: alpha(opacity=50);
-    }</style>
-<!-- Form validation -->
-<script src="~/js/form.js"></script>
-
-<!-- Custom -->
-<script src="~/js/custom.js"></script>
 <div class="top-scroll" style="display: none;"><a href="#"></a></div>
 
 @section Scripts
@@ -162,80 +122,96 @@
     <script>
         $(document).ready(function () {
             init_BookingOne();
-
             $("#drpSaloon").val($("#drpSaloon option:eq(1)").val());
             $("#drpAirdates").val($("#drpAirdates option:eq(1)").val());
-        });
 
-        $("#drpAirdates").change(function () {
+            $("#drpAirdates").change(function () {
 
-            var myUri = "@Url.Action("GetSaloonByAirdate")";
-            var airdate = $("#drpAirdates option:selected").text();
+                var myUri = "@Url.Action("GetSaloonByAirdate")";
+                var airdate = $("#drpAirdates option:selected").text();
 
-
-
-            $.ajax({
-                type: "POST",
-                url: myUri, // Gerçek Booking/index URL'sini buraya yazın
-                dataType: "Json",
-                data: { airdate: airdate },
-                success: function (result) {
-                    $('#drpSaloon').empty();
-                    $('#drpSaloon').append("<option value='0'>Choose a Saloon</option>");
-
-                    $.each(result.saloons, function (key, item) {
-                        $('#drpSaloon').append("<option value='" + key + "'>" + item + "</option>");
-                    });
-                    // Burada başka işlemler de yapabilirsiniz
-                },
-                error: function (req, status, error) {
-                    console.log('hataAldım');
-                    console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-                }
-            });
-
-        });
+                var selectedAirdate = $(this).children("option:selected").text();
+                console.log("Seçilen Airdate: " + selectedAirdate);
 
 
-        $("#drpSaloon").change(function () {
-            var myUri = "@Url.Action("GetSessionsByAirdateSaloonId")";
-            var saloonid = $("#drpSaloon").val();
-            var airdate = $("#drpAirdates option:selected").text();
-
-            // Check if both #drpSaloon and #drpAirdates are not at the 0th index
-            if (saloonid !== "0" && airdate !== "0") {
                 $.ajax({
                     type: "POST",
                     url: myUri,
-                    dataType: "json",
-                    data: { Saloonid: saloonid, Airdate: airdate },
+                    dataType: "Json",
+                    data: { airdate: airdate },
                     success: function (result) {
+                        $('#drpSaloon').empty();
+                        $('#drpSaloon').append("<option value='0'>Choose a Saloon</option>");
 
-                        $('#drpSessions').empty();
-
-                        $.each(result.sessions, function (key, item) {
-
-                            var date = new Date(item);
-                            var formatter = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit' });
-                            var formattedTime = formatter.format(date);
-
-
-                            $('#drpSessions').append("<li class='time-select__item' data-time='" + formattedTime + "'>" + formattedTime + "</li>");
+                        $.each(result.saloons, function (key, item) {
+                            $('#drpSaloon').append("<option value='" + key + "'>" + item + "</option>");
                         });
 
-                        init_BookingOne();
+
+                        $('#hdnAirDate').val(selectedAirdate);
+
                     },
                     error: function (req, status, error) {
-                        console.log('An error occurred:');
+                        console.log('hataAldım');
                         console.log(error);
                     }
                 });
-            } else {
-                // Handle the case where either #drpSaloon or #drpAirdates is at the 0th index
-                console.log('Both #drpSaloon and #drpAirdates must be selected.');
-                // You can display an error message to the user if desired
+
+            });
+
+            $("#drpSaloon").change(function () {
+                var myUri = "@Url.Action("GetSessionsByAirdateSaloonId")";
+                var saloonid = $("#drpSaloon").val();
+                var airdate = $("#drpAirdates option:selected").text();
+
+                var selectedSaloon = $(this).children("option:selected").text();
+                console.log("Seçilen Salon: " + selectedSaloon);
+
+
+                if (saloonid !== "0" && airdate !== "0") {
+                    $.ajax({
+                        type: "POST",
+                        url: myUri,
+                        dataType: "json",
+                        data: { Saloonid: saloonid, Airdate: airdate },
+                        success: function (result) {
+
+                            $('#drpSessions').empty();
+
+                            $.each(result.sessions, function (key, item) {
+
+                                var date = new Date(item);
+                                var formatter = new Intl.DateTimeFormat('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                                var formattedTime = formatter.format(date);
+
+
+                                $('#drpSessions').append("<li class='time-select__item' data-time='" + formattedTime + "'>" + formattedTime + "</li>");
+                            });
+
+                            init_BookingOne();
+
+                            $('#hdnSaloon').val(saloonid);
+                            SetSessionSelectable();
+                        },
+                        error: function (req, status, error) {
+                            console.log('An error occurred:');
+                            console.log(error);
+                        }
+                    });
+                } else {
+                    console.log('Both #drpSaloon and #drpAirdates must be selected.');
+                }
+            });
+
+            function SetSessionSelectable() {
+                $('#drpSessions li').click(function (e) {
+                    var selectedSession = $(this).attr('data-time');
+                    $('#hdnSession').val(selectedSession);
+                });
             }
+
         });
+
 
 
     </script>
@@ -243,121 +219,8 @@
 }
 
 
-<div>
-    // $(document).ready(function () {
-
-
-    // });
-    // $.ajax({
-    //     type: "GET",
-    //     url: "@Url.Action("GetNames")",
-    //     dataType: "json",
-    //     success: function (result) {
-    //         console.log(result);
-    //     },
-    //     error: function (req, status, error) {
-    //         console.log(status)
-    //     }
-    // });
-
-
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: "@Url.Action("PostNames")",
-    //     dataType: "json",
-    //     data: {name:"ABC"},
-    //     success: function (result) {
-    //         console.log(result);
-    //     },
-    //     error: function (req, status, error) {
-    //         console.log(status)
-    //     }
-    // });
-
-
-    // $(document).ready(function () {
-    //     // Dropdown tıklanma olayını yakala
-    //     $('#drpAirdates').on('click', function () {
-    //         // Dropdown içeriğini boşalt
-    //         $(this).empty();
-    //         console.log('silindi')
-    //     });
-    // });
-
-    // $('#testButton').on("click", function () {
-
-
-
-    //     console.log('ajax çağırıcam');
-
-
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "@Url.Action("GetNames")", // Bu kısmı uygun bir URL ile değiştirin
-    //         dataType: "json",
-    //         success: function (result) {
-    //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-    //         },
-    //         error: function (req, status, error) {
-    //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-    //         }
-    //     });
-
-
-    //     console.log('ajax çağırdım');
-    // });
-
-
-    // function getNames(airdateId){
-    //     $.ajax({
-    //         type: "GET",
-    //         data: airdateId
-    //         url: "@Url.Action("GetSaloonByAirDateId")", // Bu kısmı uygun bir URL ile değiştirin
-    //         dataType: "json",
-    //         success: function (result) {
-    //             console.log(result); // Başarılı olduğunda sonuçları konsola yazdırabilirsiniz
-    //         },
-    //         error: function (req, status, error) {
-    //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-    //         }
-    //     });
-    // }
-
-    // GET isteği örneği
-    // GET isteği örneği
-
-    // $("#drpSaloon").change(function () {
-
-    //     var myUri = "@Url.Action("BookingController/SeedData")";
-    //     var saloonid = $("#drpSaloon").val();
-
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: myUri, // Gerçek Booking/index URL'sini buraya yazın
-    //         dataType: "Json",
-    //         data: { saloonid: saloonid },
-    //         success: function (result) {
-
-    //             $('#drpSaloon').empty();
-
-    //             $.each(result, function (key, item) {
-    //                 $('#drpSaloon').append("
-    <option value='" + key + "'>" + item + "</option>");
-    //             });
-    //             // Burada başka işlemler de yapabilirsiniz
-    //         },
-    //         error: function (req, status, error) {
-    //             console.log('hataAldım');
-    //             console.log(error); // Hata durumunda hata mesajını konsola yazdırabilirsiniz
-    //         }
-    //     });
-
-    // });
-</div>
 
 
 
 
-       
+

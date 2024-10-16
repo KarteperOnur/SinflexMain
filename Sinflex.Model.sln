@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinflex.BLL", "Sinflex.BLL\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinflex.IOC", "Sinflex.IOC\Sinflex.IOC.csproj", "{A3568998-AA9D-42EE-9075-1A8128285AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinflex.Common", "Sinflex.Common\Sinflex.Common.csproj", "{5AE2F0EF-CC77-4C4D-99BC-D9647F5CD3C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sinflex.Common", "Sinflex.Common\Sinflex.Common.csproj", "{5AE2F0EF-CC77-4C4D-99BC-D9647F5CD3C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,6 +3,7 @@ using Sinflex.BLL.Repositories.Abstracts.BaseAbstract;
 using Sinflex.Core.Enums;
 using Sinflex.DAL.Context;
 using Sinflex.Model.Base;
+using System.Linq.Expressions;
 
 namespace Sinflex.BLL.Repositories.Concretes.BaseConcrete
 {
@@ -102,6 +103,11 @@ namespace Sinflex.BLL.Repositories.Concretes.BaseConcrete
         public IEnumerable<T> GetPassives()
         {
             return _entities.Where(x => x.IsActive == false).ToList();
+        }
+
+        public IQueryable<T> Find(Expression<Func<T, Boolean>> where)
+        {
+            return _entities.Where(where);
         }
 
         public IQueryable<T> GetPassivesQ()

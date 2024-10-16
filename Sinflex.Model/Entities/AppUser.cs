@@ -24,8 +24,9 @@ namespace Sinflex.Model.Entities
         //Reservation
 
         //MAPPING
-        public ICollection<Ticket> Tickets { get; set; }=new HashSet<Ticket>();
+        public ICollection<Ticket> Tickets { get; set; } = new HashSet<Ticket>();
+        public ICollection<Seat> Seats { get; set; } = new HashSet<Seat>();
 
-       
+
     }
 }

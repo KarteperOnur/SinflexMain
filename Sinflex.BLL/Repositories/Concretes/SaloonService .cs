@@ -2,7 +2,6 @@
 using Sinflex.BLL.Repositories.Abstracts;
 using Sinflex.BLL.Repositories.Abstracts.BaseAbstract;
 using Sinflex.BLL.Repositories.ViewModels.BookingSaloonViewModels;
-using Sinflex.BLL.Repositories.ViewModels.BookingViewModels;
 using Sinflex.Model.Entities;
 
 namespace Sinflex.BLL.Repositories.Concretes
@@ -47,10 +46,6 @@ namespace Sinflex.BLL.Repositories.Concretes
             {
                 Saloons = salonDictionary
 
-                //Airdates = movie.AirDates.ToDictionary(x => x.Id, k => k.Airdate),
-                //Saloons = incluededSaloon,
-                //Sessions = includedSessions,
-                //Name = incluededSaloon.FirstOrDefault().Value,
 
             };
 
@@ -70,8 +65,7 @@ namespace Sinflex.BLL.Repositories.Concretes
             {
 
                 var session = x.Id;
-                //var movie = x.Movies.Id;
-                //var airdate = new DateTime(1900, 1, 1, x.Time.Hour, x.Time.Minute, x.Time.Second);
+
                 var airdate = x.Time;
                 sessionDictionary.Add(session, airdate);
             }
@@ -83,36 +77,7 @@ namespace Sinflex.BLL.Repositories.Concretes
 
         }
 
+
+
     }
 }
-//var saloonIds = _airDateRepository
-// .GetAllQ()
-// .Where(x => x.Airdate.Equals(airDate))
-// .Select(x => x.Saloon.Id)
-// .ToList();
-//Dictionary<int, string> salonDictionary = new Dictionary<int, string>();
-
-//foreach (var id in saloonIds)
-//{
-//    var saloon = _saloonRepository.GetbyId(id);
-
-//    var saloonName = saloon.Name;
-//    var saloonId = saloon.Id;
-//    salonDictionary.Add(saloonId, saloonName);
-//}
-
-
-
-
-//var result = new BookingSaloonViewModel
-//{
-//    Saloons = salonDictionary
-
-//    //Airdates = movie.AirDates.ToDictionary(x => x.Id, k => k.Airdate),
-//    //Saloons = incluededSaloon,
-//    //Sessions = includedSessions,
-//    //Name = incluededSaloon.FirstOrDefault().Value,
-
-//};
-
-//return result;

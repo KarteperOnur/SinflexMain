@@ -1,9 +1,4 @@
 ﻿using Sinflex.Model.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sinflex.Model.Entities
 {
@@ -13,9 +8,11 @@ namespace Sinflex.Model.Entities
         public DateTime PurchaseDate { get; set; }
         public int PurchasePrice { get; set; }
 
+        public virtual Saloon Saloon { get; set; }
+        public virtual Movie Movie { get; set; }
 
         //MAPPING
         public virtual AppUser User { get; set; }
-        public virtual Seat Seat { get; set; }
+        public ICollection<Seat> Seats { get; set; } = new HashSet<Seat>();
     }
 }

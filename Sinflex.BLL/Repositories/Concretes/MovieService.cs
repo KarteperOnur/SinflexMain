@@ -23,12 +23,12 @@ namespace Sinflex.BLL.Repositories.Concretes
             _saloonRepository = saloonRepository;
         }
 
-        public IEnumerable<MovieListModel> GetAllMovies()
+        public IEnumerable<MovieListModel> GetAllMovies(string searchFilter, bool isSecondClick)
         {
-            //IRepository Queryable Get yapılmalı. 
+ 
             var movies = _movieRepository.GetAllQ()
                 .Include(p => p.Sessions)
-                .Include(p => p.AirDates)//Include Tablo'nun alt tablolarındaki veriyi de getirir.
+                .Include(p => p.AirDates)
                 .Include(p => p.Categories)
                 .ToList();
 
@@ -43,11 +43,38 @@ namespace Sinflex.BLL.Repositories.Concretes
                 Director = x.Director,
                 Category = string.Join(',', x.Categories.Select(p => p.Description).ToList()),
                 Id = x.Id,
-
-
+                ImagePath = x.ImagePath
             }).ToList();
 
+            if (!string.IsNullOrEmpty(searchFilter))
+            {
+                if (!isSecondClick)
+                {
+                    if (searchFilter == "releaseDate")
+                    {
+                        movieList = movieList.OrderByDescending(x => x.ReleaseDate).ToList();
+                    }
+                    else if (searchFilter == "name")
+                    {
+                        movieList = movieList.OrderByDescending(x => x.Name).ToList();
+                    }
+                }
+                else
+                {
+                    if (searchFilter == "releaseDate")
+                    {
+                        movieList = movieList.OrderBy(x => x.ReleaseDate).ToList();
+                    }
+                    else if (searchFilter == "name")
+                    {
+                        movieList = movieList.OrderBy(x => x.Name).ToList();
+                    }
+                }
+               
+            }
             return movieList;
+
+            
         }
 
         public IEnumerable<MovieListModel> GetByDate(DateTime searchDate)
@@ -56,6 +83,10 @@ namespace Sinflex.BLL.Repositories.Concretes
                 .GetAllQ()
                 .Include(p => p.AirDates)
                 .Where(m => m.AirDates.Any(x => x.Airdate == searchDate));
+
+            //var moviees2 = _movieRepository
+            //    .Find(m => m.AirDates.Any(x => x.Airdate == searchDate))
+            //    .Include(p => p.AirDates);
 
             return movies.Select(m => new MovieListModel
             {
@@ -73,12 +104,12 @@ namespace Sinflex.BLL.Repositories.Concretes
 
         public MovieDetailsBookingViewModel GetMovieDetailsById(int movieId)
         {
-            //İSTEDİĞİM MOVİE NESNESİ ---BAŞLANGIÇ---
             var movie = _movieRepository.GetbyId(movieId);
 
             // airDates
             var airDates = _airDateRepository
                 .GetAllQ()
+                .Include(a => a.Saloon)
                 .Where(x => x.Movie.Id == movie.Id)
                 .ToList();
 
@@ -94,10 +125,6 @@ namespace Sinflex.BLL.Repositories.Concretes
                 .Where(x => x.Movies.Id == movie.Id)
                 .ToList();
 
-            //var search = "Ton";
-            //List<string> aListesi = new List<string>() { "sadasd", "adasda", "Tonay", "Tonay2", "asdasdas" };
-
-            //var sonuc = aListesi.Where(x => x.Contains(search)).ToList();
 
             List<DateTime> includedSessions = new List<DateTime>();
             Dictionary<int, string> incluededSaloon = new Dictionary<int, string>();
@@ -108,7 +135,7 @@ namespace Sinflex.BLL.Repositories.Concretes
                 var includedAirDatesSessions = sessions.Where(x => x.Time.Date == firstAirdate.Airdate.Date).ToList();
                 var includedAirdatesSaloon = saloons.Where(x => x.Id == firstAirdate.Saloon.Id).ToList();
 
-                if (includedAirDatesSessions.Count > 0) 
+                if (includedAirDatesSessions.Count > 0)
                 {
                     foreach (var item in includedAirDatesSessions)
                     {
@@ -129,16 +156,15 @@ namespace Sinflex.BLL.Repositories.Concretes
             movie.AirDates = airDates;
             movie.Saloons = saloons;
             movie.Sessions = sessions;
-            //İSTEDİĞİM MOVİE NESNESİ ---BİTİŞ---
 
             var result = new MovieDetailsBookingViewModel
             {
-                Airdates = movie.AirDates.ToDictionary(x => x.Id,k=>k.Airdate),
+                Airdates = movie.AirDates.ToDictionary(x => x.Id, k => k.Airdate),
                 Saloons = incluededSaloon,
-                //Sessions = includedSessions.Count > 0 ? includedSessions : movie.Sessions.Select(x => x.Time).ToList(),
                 Sessions = includedSessions,
                 Name = movie.Name,
                 ImagePath = movie.ImagePath,
+                MovieId = movie.Id
             };
 
             return result;

@@ -3,11 +3,6 @@ using Sinflex.BLL.Repositories.Abstracts;
 using Sinflex.BLL.Repositories.Abstracts.BaseAbstract;
 using Sinflex.BLL.Repositories.Concretes;
 using Sinflex.BLL.Repositories.Concretes.BaseConcrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sinflex.IOC.DependencyResolvers
 {
@@ -17,6 +12,9 @@ namespace Sinflex.IOC.DependencyResolvers
         {
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<ISaloonService, SaloonService>();
+            services.AddScoped<ISeatService, SeatService>();
+            services.AddScoped<ITicketService, TicketService>();
             return services;
         }
     }

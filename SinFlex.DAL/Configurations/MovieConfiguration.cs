@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sinflex.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sinflex.DAL.Configurations
 {
@@ -22,8 +17,6 @@ namespace Sinflex.DAL.Configurations
             builder.HasMany(x => x.Reservations)
                 .WithOne(x => x.Movie);
 
-            //builder.HasMany(x => x.Tickets)
-            //    .WithOne(x => x.Movie);
         }
     }
 }
