@@ -20,8 +20,7 @@ namespace Sinflex.BLL.Repositories.ViewModels.MovieViewModels
         public string Director { get; set; }
         public string AgeRestriction { get; set; }
 
-		//Session Bilgileri.
-		//public Session Session { get; set; }
+
 
 
 

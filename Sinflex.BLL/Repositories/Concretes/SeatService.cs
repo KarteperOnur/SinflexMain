@@ -44,21 +44,23 @@ namespace Sinflex.BLL.Repositories.Concretes
                         Place = item.Value
                     };
 
-                    //ara kontrol
-                    var addedSeat = _seatRepository
-                        .GetAllQ()
-                        .Where(x => x.Saloon.Id.Equals(seatingViewModel.SelectedSaloonId) && x.Place.Equals(item.Value)/* && x.Session.Id.Equals(seatingViewModel.SelectedSession)*/)
-                        .FirstOrDefault();
+                    var seatCreateResult = await _seatRepository.Create(seat);
 
-                    if (addedSeat != null)
-                    {
-                        var seatCreateResult = await _seatRepository.Create(seat);
+                    ////ara kontrol
+                    //var addedSeat = _seatRepository
+                    //    .GetAllQ()
+                    //    .Where(x => x.Saloon.Id.Equals(seatingViewModel.SelectedSaloonId) && x.Place.Equals(item.Value)/* && x.Session.Id.Equals(seatingViewModel.SelectedSession)*/)
+                    //    .FirstOrDefault();
 
-                        if (seatCreateResult != "Kayıt işlemi başarılı")
-                            return false;
-                    }
-                    else
-                        return false;
+                    //if (addedSeat != null)
+                    //{
+                    //    var seatCreateResult = await _seatRepository.Create(seat);
+
+                    //    if (seatCreateResult != "Kayıt işlemi başarılı")
+                    //        return false;
+                    //}
+                    //else
+                    //    return false;
                 }
 
                 result = true;
